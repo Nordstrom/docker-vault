@@ -1,7 +1,9 @@
-FROM nordstrom/baseimage-ubuntu:14.04
+FROM quay.io/nordstrom/baseimage-ubuntu:16.04
 
-ENV VAULT_VERSION 0.5.0
-ENV VAULT_SHA256 f81accce15313881b8d53b039daf090398b2204b1154f821a863438ca2e5d570
+ARG VAULT_VERSION 
+ARG VAULT_SHA256
+
+USER root
 
 RUN apt-get update -qy \
  && apt-get install -qy curl unzip \
@@ -12,5 +14,8 @@ RUN apt-get update -qy \
  && unzip /tmp/vault.zip \
  && chmod +x /bin/vault \
  && rm /tmp/vault.zip
+
+RUN chmod 755 /bin/vault
+USER ubuntu
 
 ENTRYPOINT ["/bin/vault"]
